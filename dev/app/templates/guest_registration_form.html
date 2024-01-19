@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Registration{% endblock %}
+{% block head %}
+  {{ super() }}
+{% endblock %}
+{% block content %}
+  <h1>Registration</h1>
+  <form action="/join" method="POST">
+    <div class="form-group">
+      <label for="first_namefield">First Name</label>
+      <input type="text" class="form-control" id="namefield" name="first_name" aria-describedby="type your first name" placeholder="type your first name">
+      <small id="first_nameHelp" class="form-text text-muted">Let us know who you are.</small>
+    </div>
+
+    <div class="form-group">
+      <label for="last_namefield">Last name</label>
+      <input type="text" class="form-control" id="last_namefield" name="last_name" aria-describedby="last_nameHelp" placeholder="type your last name">
+      <small id="last_nameHelp" class="form-text text-muted">Let us know who you are.</small>
+    </div>
+    <div class="form-group">
+      <label for="emailfield">Email address</label>
+      <input type="email" class="form-control" id="emailfield" name="email" aria-describedby="emailHelp" placeholder="your email here">
+      <small id="emailHelp" class="form-text text-muted">Your email address in case we need to contact you.</small>
+    </div>
+      <div class="form-group">
+        <label for="meal_option">Meal Option</label>
+        <input type="text"  class="form-control" id="meal_option" name="meal_option"
+          aria-describedby="meal_optionHelp" value="vegetarian">
+        <small id="partyHelp" class="form-text text-muted"> Choose between vegeterian or non vegeterian meal</small>
+      </div>
+      <div class="form-group">
+      <label for="group_size">Number of attendees</label>
+      <input type="number" min="0" step="1" class="form-control" id="group_size" name="group_size" aria-describedby="partyHelp" value="1">
+      <small id="partyHelp" class="form-text text-muted"> Tell us how many people will join</small>
+    </div>
+  <button type="submit" class="btn btn-default">Register</button>
+  </form>
+{% endblock %}

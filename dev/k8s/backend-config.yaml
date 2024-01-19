@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  labels:
+    service: backend
+  name: backend-deployment
+
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      service: backend
+  template:
+    metadata:
+      labels:
+        service: backend
+    spec:
+      containers:
+      - name: backend-pod
+        ports:
+        - containerPort: 5000
+        env:
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: postgres-credentials
+                key: password
+          - name: DATABASE_URL
+            value:  postgresql://postgres:$(POSTGRES_PASSWORD)@db-service:5432/guests_db
+        image: yannisbhm/guest-app-backend-k8s:linuxamd64
+        imagePullPolicy: Always
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+
+
+      restartPolicy: Always
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+      service: backend
+  name: backend-service
+spec:
+  type: LoadBalancer
+  ports:
+    - name: "5000"
+      port: 8000
+      targetPort: 5000
+  selector:
+    service: backend

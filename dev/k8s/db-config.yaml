@@ -1,0 +1,67 @@
+# In db-congif.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    service: db
+  name: db-service
+spec:
+  ports:
+    - name: "5432"
+      port: 5432
+      targetPort: 5432
+  selector:
+    service: db
+
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    service: db
+  name: db-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: db
+  template:
+    metadata:
+      labels:
+        service: db
+    spec:
+      containers:
+        - env:
+            - name: POSTGRES_DB
+              value: guests_db
+            - name: POSTGRES_USER
+              value: postgres
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: password
+          image: postgres:14-alpine
+          imagePullPolicy: Always
+          name: db
+          volumeMounts:
+          - name: persistent-storage
+            mountPath: /mnt-efs
+          ports:
+            - containerPort: 5432
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+
+
+      restartPolicy: Always
+      volumes:
+        - name: persistent-storage
+          persistentVolumeClaim:
+            claimName: postgres-pv-claim

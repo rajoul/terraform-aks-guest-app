@@ -1,0 +1,28 @@
+version : "3"
+
+services:
+
+  db:
+    image: postgres:14-alpine
+    container_name: db
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=guests_db
+    volumes:
+      - postgres_data:/mount/var/lib/postgresql/data/
+
+  backend:
+    container_name: backend
+    build: .
+    ports:
+      - 5000:5000
+    environment:
+      - DATABASE_URL=postgresql://postgres:password@db:5432/guests_db
+    depends_on:
+      - db
+    restart: on-failure
+volumes:
+  postgres_data:

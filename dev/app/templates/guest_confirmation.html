@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Registration Confirmed{% endblock %}
+{% block head %}
+  {{ super() }}
+{% endblock %}
+{% block content %}
+  <h1>You are confirmed!</h1>
+  <p>
+    First name: {{ first_name }}<br/>
+    Last name: {{ last_name }}<br />
+    Email: {{ email }}<br />
+    Meal option: {{ meal_option }}<br/>
+    Group size: {{ group_size }}
+  </p>
+  <a href="/">View all participants</a>
+{% endblock %}

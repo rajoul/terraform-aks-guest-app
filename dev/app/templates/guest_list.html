@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Registered participants{% endblock %}
+{% block head %}
+  {{ super() }}
+{% endblock %}
+{% block content %}
+  <h1>Registered participants</h1>
+  <table class="table table-striped">
+  <thead>
+  <tr>
+    <th>First Name</th>
+    <th>Last name</th>
+    <th>Email</th>
+    <th>Meal Option</th>
+    <th>Participants</th>
+  </tr>
+  </thead>
+  <tbody>
+  {% for guest in guests %}
+    <tr>
+    <td>{{ guest.first_name }}</td>
+    <td>{{ guest.last_name }}</td>
+    <td>{{ guest.email }}</td>
+    <td>{% if guest.meal_option %}{{ guest.meal_option }}{% else %}"vegetarian"{% endif %}</td>
+    <td>{% if guest.group_size %}{{ guest.group_size }}{% else %}1{% endif %}</td>
+    </tr>
+  {% endfor %}
+</table>
+<p class="navbar-btn">
+  <a href="/join" class="btn btn-default">Join!</a>
+</p>
+{% endblock %}
